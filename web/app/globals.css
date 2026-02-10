@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+  --retro-blue: #4a90d9;
+  --retro-green: #7cb342;
+  --retro-purple: #9c27b0;
+  --retro-yellow: #f9a825;
+  --retro-red: #e53935;
+  --retro-dark: #1a1a2e;
+  --retro-light: #f5f5f5;
+  --stormbreaker-primary: #4a90d9;
+  --stormbreaker-secondary: #1e3a5f;
+  --textevidence-primary: #7cb342;
+  --textevidence-secondary: #2e4a1c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'VT323', monospace;
+  background: var(--retro-dark);
+  color: var(--retro-light);
+  overflow-x: hidden;
+}
+
+/* Retro pixel font for headers */
+.font-pixel {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.font-retro {
+  font-family: 'VT323', monospace;
+}
+
+/* Retro button styling */
+.btn-retro {
+  @apply px-6 py-3 border-4 border-white font-pixel text-sm uppercase tracking-wider;
+  @apply transition-all duration-200;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+}
+
+.btn-retro:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+}
+
+.btn-retro:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+/* Retro card */
+.card-retro {
+  @apply border-4 border-white p-4;
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
+}
+
+/* Room backgrounds */
+.room-stormbreaker {
+  background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 50%, #4a90d9 100%);
+}
+
+.room-textevidence {
+  background: linear-gradient(180deg, #2e4a1c 0%, #4a7c2e 50%, #7cb342 100%);
+}
+
+/* Pixel art animation for Claudia */
+@keyframes walk {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes type {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.95); }
+}
+
+@keyframes idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+}
+
+.claudia-walk {
+  animation: walk 0.5s infinite;
+}
+
+.claudia-type {
+  animation: type 0.2s infinite;
+}
+
+.claudia-idle {
+  animation: idle 2s infinite ease-in-out;
+}
+
+.claudia-celebrate {
+  animation: celebrate 0.5s infinite;
+}
+
+/* Progress bar */
+.progress-retro {
+  @apply h-6 border-4 border-white bg-gray-800 relative overflow-hidden;
+}
+
+.progress-retro-fill {
+  @apply h-full transition-all duration-500;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.3);
+}
+
+/* Status indicators */
+.status-dot {
+  @apply w-4 h-4 rounded-full inline-block mr-2;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.status-active {
+  @apply bg-green-400;
+  animation: pulse 1s infinite;
+}
+
+.status-idle {
+  @apply bg-yellow-400;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Thunder effect for Stormbreaker */
+@keyframes thunder {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 0; }
+  50% { opacity: 0.3; }
+}
+
+.thunder-overlay {
+  animation: thunder 3s infinite;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .font-pixel {
+    font-size: 0.7rem;
+  }
+  
+  .btn-retro {
+    @apply px-4 py-2 text-xs;
+  }
+}
