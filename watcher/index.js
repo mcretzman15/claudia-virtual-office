@@ -73,19 +73,43 @@ function detectActivityType(filePath, command) {
   return 'working';
 }
 
-// Get recent git commits
+// Get recent git commits from workspace and subdirectories
 async function getRecentCommits() {
+  const allCommits = [];
+  
+  // Try main workspace
   try {
-    const git = simpleGit(WORKSPACE);
-    const log = await git.log({ maxCount: 5 });
-    return log.all.map(commit => ({
-      message: commit.message,
-      date: commit.date,
-      author: commit.author_name
-    }));
+    const mainGit = simpleGit(WORKSPACE);
+    const mainLog = await mainGit.log({ maxCount: 5 });
+    allCommits.push(...mainLog.all);
   } catch (e) {
-    return [];
+    // No commits in main workspace
   }
+  
+  // Try subdirectories (textevidence, vincit-dashboard, etc.)
+  const subdirs = ['textevidence', 'vincit-dashboard'];
+  for (const dir of subdirs) {
+    try {
+      const dirPath = path.join(WORKSPACE, dir);
+      const dirGit = simpleGit(dirPath);
+      const dirLog = await dirGit.log({ maxCount: 3 });
+      allCommits.push(...dirLog.all.map(c => ({
+        ...c,
+        message: `[${dir}] ${c.message}`
+      })));
+    } catch (e) {
+      // Not a git repo or no commits
+    }
+  }
+  
+  // Sort by date, most recent first
+  allCommits.sort((a, b) => new Date(b.date) - new Date(a.date));
+  
+  return allCommits.slice(0, 5).map(commit => ({
+    message: commit.message,
+    date: commit.date,
+    author: commit.author_name
+  }));
 }
 
 // Get recent bash commands
@@ -194,6 +218,14 @@ setInterval(() => {
     }
   }
 }, 30000);
+
+// CORS for local development
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 // Express routes
 app.use(express.static('public'));

@@ -1,0 +1,15 @@
+{
+  "name": "claudia-office",
+  "version": "1.1.0",
+  "description": "Claudia's Virtual Office - Real-time project monitoring",
+  "scripts": {
+    "watcher": "cd watcher && npm start",
+    "dev": "cd web && npm run dev",
+    "build": "cd web && npm run build",
+    "office": "concurrently \"npm run watcher\" \"sleep 3 && npm run dev\"",
+    "start": "npm run office"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
